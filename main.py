@@ -30,6 +30,19 @@ def get_movies(data, context):
         gfc.add_movie(data, id)
     return True
 
+def get_film_url_and_author_url(a_hrefs):
+    author_url = ""
+    film_url = ""
+    for a in a_hrefs:
+        if "cast" in a['href']:
+            author_url = a['href']
+        elif "films" in a['href']:
+            film_url = a['href']
+        else:
+            continue
+    return author_url, film_url
+
+
 
 
 def main(data, context):
@@ -44,9 +57,15 @@ def main(data, context):
         director = article.find("h3").find("span", {"itemprop": "name"}).text
         location_and_year = article.find("h3").find("span", {"class":"now-showing-tile-director-year__year-country light-on-dark"}).text
         text = article.find("p", {"class": "full-width-tile__our-take light-on-dark"}).text
-        data = {"title" : title, "director": director, "location_and_year": location_and_year, "text": text.strip()}
+        a_hrefs = article.find_all('a', href=True)
+        author_url, film_url = get_film_url_and_author_url(a_hrefs)
+
+        data = {"title": title, "director": director, "location_and_year": location_and_year, "text": text.strip(),
+                "author_url": author_url,
+                "film_url": film_url}
+
         id = format_id(data)
         gfc.add_movie(data, id)
 
 if __name__ == '__main__':
-    main()
+    main("", "")

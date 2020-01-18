@@ -23,6 +23,8 @@ def get_movies():
         location_and_year = article.find("h3").find("span", {"class":"now-showing-tile-director-year__year-country light-on-dark"}).text
         text = article.find("p", {"class": "full-width-tile__our-take light-on-dark"}).text
         data = {"title" : title, "director": director, "location_and_year": location_and_year, "text": text.strip()}
+        # url = article.find("a", {"class":})
+
         id = format_id(data)
         gfc.add_movie(data, id)
     return True
