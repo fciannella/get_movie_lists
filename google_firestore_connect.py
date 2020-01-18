@@ -2,7 +2,7 @@ import os
 from google.cloud import firestore
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/fciannel/.ssh/fciannel-apps-62b24a3b535e.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/fciannel/.ssh/fciannel-apps-62b24a3b535e.json"
 
 
 # Add a new document
