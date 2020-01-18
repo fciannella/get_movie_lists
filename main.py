@@ -35,9 +35,9 @@ def get_film_url_and_author_url(a_hrefs):
     film_url = ""
     for a in a_hrefs:
         if "cast" in a['href']:
-            author_url = a['href']
+            author_url = "https://mubi.com"+a['href']
         elif "films" in a['href']:
-            film_url = a['href']
+            film_url = "https://mubi.com"+a['href']
         else:
             continue
     return author_url, film_url
