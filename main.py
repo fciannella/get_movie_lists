@@ -11,6 +11,9 @@ def format_id(data):
 
 
 def get_movies(data, context):
+    """
+
+    """
     url = "https://mubi.com/showing"
     r = requests.get(url)
     html = r.text
@@ -29,7 +32,7 @@ def get_movies(data, context):
 
 
 
-def main():
+def main(data, context):
     url = "https://mubi.com/showing"
     r = requests.get(url)
     html = r.text
