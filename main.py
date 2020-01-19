@@ -77,7 +77,7 @@ def main(data, context):
                 "author_url": author_url,
                 "film_url": film_url,
                 # "created": gfc.firestore.SERVER_TIMESTAMP
-                "created": created
+                "created": str(created)
                 }
 
         id = format_id(data)
