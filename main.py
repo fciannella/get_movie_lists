@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import google_firestore_connect as gfc
+from datetime import datetime, timedelta
+import re
 
 
 def format_id(data):
@@ -51,6 +53,7 @@ def main(data, context):
     html = r.text
     soup = BeautifulSoup(html, features="lxml")
     articles = soup.find_all("article", {"class": "full-width-tile full-width-tile--now-showing"})
+    rolling_days = 30
 
     for article in articles:
         title = article.find("h2").text
@@ -59,11 +62,23 @@ def main(data, context):
         text = article.find("p", {"class": "full-width-tile__our-take light-on-dark"}).text
         a_hrefs = article.find_all('a', href=True)
         author_url, film_url = get_film_url_and_author_url(a_hrefs)
+        days_left = article.find("div", {"class": "full-width-tile__days-left"}).text
+        days = re.match(r"^([0-9]+).*", days_left)
+        if days:
+            num_days = int(days.group(1))
+        else:
+            num_days = 1
+        created = datetime.today() - timedelta(days=rolling_days - num_days)
 
-        data = {"title": title, "director": director, "location_and_year": location_and_year, "text": text.strip(),
+        data = {"title": title,
+                "director": director,
+                "location_and_year": location_and_year,
+                "text": text.strip(),
                 "author_url": author_url,
                 "film_url": film_url,
-                "created": gfc.firestore.SERVER_TIMESTAMP}
+                # "created": gfc.firestore.SERVER_TIMESTAMP
+                "created": created
+                }
 
         id = format_id(data)
         gfc.add_movie(data, id)
