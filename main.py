@@ -60,7 +60,6 @@ def main(data, context):
         a_hrefs = article.find_all('a', href=True)
         author_url, film_url = get_film_url_and_author_url(a_hrefs)
 
-        created = gfc.firestore.SERVER_TIMESTAMP
         data = {"title": title, "director": director, "location_and_year": location_and_year, "text": text.strip(),
                 "author_url": author_url,
                 "film_url": film_url,
